@@ -1,0 +1,60 @@
+{
+  "name": "helldivers-macro-machine",
+  "productName": "Helldivers Macro Machine",
+  "version": "1.0.0",
+  "description": "Global-hotkey stratagem macro runner for HELLDIVERS 2",
+  "main": "src/main/main.js",
+  "author": "mwserver",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "icon": "node scripts/make-icon.js",
+    "start": "electron .",
+    "place": "node scripts/place-exe.js",
+    "dist": "npm run icon && electron-builder --win portable && npm run place",
+    "dist:installer": "npm run icon && electron-builder --win nsis && npm run place",
+    "dist:all": "npm run icon && electron-builder --win portable nsis && npm run place"
+  },
+  "dependencies": {
+    "koffi": "^3.2.1"
+  },
+  "devDependencies": {
+    "electron": "^44.3.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.mwserver.helldivers-macro-machine",
+    "productName": "Helldivers Macro Machine",
+    "publish": null,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "**/node_modules/koffi/**"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "portable": {
+      "artifactName": "HelldiversMacroMachine-${version}-portable.exe"
+    },
+    "nsis": {
+      "artifactName": "HelldiversMacroMachine-${version}-setup.exe",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Helldivers Macro Machine",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "perMachine": false
+    }
+  }
+}

@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:;" />
+  <title>Helldivers Macro Machine</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">▲</span>
+      <div>
+        <h1>Helldivers Macro Machine</h1>
+        <p class="brand-sub">Stratagem hotkeys for HELLDIVERS 2</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="status" id="status">
+        <span class="status-dot"></span>
+        <span class="status-text" id="statusText">DISABLED</span>
+      </div>
+      <button class="btn btn-primary" id="toggleBtn">Arm macros</button>
+      <span class="hint" id="toggleHint"></span>
+      <button class="btn btn-ghost" id="settingsBtn" title="Settings">⚙ Settings</button>
+    </div>
+
+    <div class="win-controls">
+      <button class="win-btn" id="winMinimize" title="Minimise" aria-label="Minimise">
+        <svg viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M2 6h8" />
+        </svg>
+      </button>
+
+      <button class="win-btn" id="winMaximize" title="Maximise" aria-label="Maximise">
+        <svg viewBox="0 0 12 12" aria-hidden="true" id="iconMaximize">
+          <rect x="2.5" y="2.5" width="7" height="7" />
+        </svg>
+        <svg viewBox="0 0 12 12" aria-hidden="true" id="iconRestore" hidden>
+          <rect x="2.5" y="4" width="5.5" height="5.5" />
+          <path d="M4.5 2.5h5v5" />
+        </svg>
+      </button>
+
+      <button class="win-btn win-btn-close" id="winClose" title="Close" aria-label="Close">
+        <svg viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M3 3l6 6M9 3l-6 6" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="banner banner-error" id="inputBanner" hidden></div>
+  <div class="banner banner-warn" id="hotkeyBanner" hidden></div>
+
+  <main class="layout">
+
+    <!-- ------------------------------------------------------- Loadout --->
+    <section class="panel panel-loadout">
+      <div class="panel-head">
+        <h2>Loadout</h2>
+        <span class="count" id="bindingCount"></span>
+      </div>
+
+      <p class="panel-note">
+        Press a hotkey in-game to fire its stratagem. Press it again mid-run to cancel.
+      </p>
+
+      <div class="binding-list" id="bindingList"></div>
+
+      <button class="btn btn-dashed" id="addBindingBtn">+ Add hotkey</button>
+    </section>
+
+    <!-- ------------------------------------------------------- Library --->
+    <section class="panel panel-library">
+      <div class="panel-head">
+        <h2>Stratagems</h2>
+        <span class="count" id="libraryCount"></span>
+      </div>
+
+      <div class="library-controls">
+        <input type="search" id="search" placeholder="Search stratagems…" autocomplete="off" />
+        <button class="btn btn-ghost" id="newMacroBtn">+ Custom macro</button>
+      </div>
+
+      <div class="chips" id="groupChips"></div>
+
+      <div class="library-list" id="libraryList"></div>
+    </section>
+  </main>
+
+  <footer class="statusbar">
+    <div class="run-status" id="runStatus">Idle</div>
+    <div class="run-progress"><div class="run-progress-fill" id="runProgress"></div></div>
+    <button class="btn btn-small btn-danger" id="abortBtn" hidden>Abort</button>
+    <span class="version" id="version"></span>
+  </footer>
+
+  <!-- ------------------------------------------------ Hotkey capture --->
+  <div class="modal-backdrop" id="captureModal" hidden>
+    <div class="modal modal-narrow">
+      <h3 id="captureTitle">Press a hotkey</h3>
+      <p class="modal-note">
+        Hold your modifiers and press a key. <kbd>Esc</kbd> cancels.
+      </p>
+      <div class="capture-display" id="captureDisplay">…</div>
+      <p class="capture-warning" id="captureWarning" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="captureCancel">Cancel</button>
+        <button class="btn btn-primary" id="captureConfirm" disabled>Assign</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------- Macro picker --->
+  <div class="modal-backdrop" id="pickerModal" hidden>
+    <div class="modal">
+      <h3>Choose a stratagem</h3>
+      <input type="search" id="pickerSearch" placeholder="Search…" autocomplete="off" />
+      <div class="picker-list" id="pickerList"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="pickerCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------- Custom macro editor --->
+  <div class="modal-backdrop" id="macroModal" hidden>
+    <div class="modal">
+      <h3 id="macroModalTitle">Custom macro</h3>
+
+      <label class="field">
+        <span>Name</span>
+        <input type="text" id="macroName" placeholder="My stratagem" maxlength="60" />
+      </label>
+
+      <div class="field">
+        <span>Sequence</span>
+        <div class="sequence-display" id="sequenceDisplay"></div>
+      </div>
+
+      <div class="sequence-controls">
+        <button class="btn btn-dir" data-dir="U">↑</button>
+        <button class="btn btn-dir" data-dir="D">↓</button>
+        <button class="btn btn-dir" data-dir="L">←</button>
+        <button class="btn btn-dir" data-dir="R">→</button>
+        <button class="btn btn-ghost btn-small" id="seqBackspace">⌫ Undo</button>
+        <button class="btn btn-ghost btn-small" id="seqClear">Clear</button>
+        <button class="btn btn-ghost btn-small" id="seqRecord">● Record keys</button>
+      </div>
+
+      <p class="modal-note" id="recordNote" hidden>
+        Recording — press arrow keys or WASD. Click <strong>Stop</strong> when done.
+      </p>
+
+      <div class="modal-actions">
+        <button class="btn btn-danger btn-small" id="macroDelete" hidden>Delete</button>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" id="macroCancel">Cancel</button>
+        <button class="btn btn-primary" id="macroSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------- Settings --->
+  <div class="modal-backdrop" id="settingsModal" hidden>
+    <div class="modal modal-wide">
+      <h3>Settings</h3>
+
+      <div class="settings-grid">
+        <section>
+          <h4>In-game keys</h4>
+          <p class="modal-note">Match these to your HELLDIVERS 2 keybinds.</p>
+
+          <label class="field">
+            <span>Stratagem key (held)</span>
+            <select id="setStratagemKey"></select>
+          </label>
+
+          <div class="dir-grid">
+            <label class="field"><span>Up</span><select id="setDirU"></select></label>
+            <label class="field"><span>Down</span><select id="setDirD"></select></label>
+            <label class="field"><span>Left</span><select id="setDirL"></select></label>
+            <label class="field"><span>Right</span><select id="setDirR"></select></label>
+          </div>
+        </section>
+
+        <section>
+          <h4>Timing</h4>
+          <p class="modal-note">
+            HELLDIVERS 2 ignores direction inputs that arrive faster than ~40 ms.
+            Raise these if stratagems start failing intermittently.
+          </p>
+
+          <label class="field">
+            <span>Delay between inputs (ms)</span>
+            <input type="number" id="setStepDelay" min="20" max="5000" step="10" />
+          </label>
+          <label class="field">
+            <span>Hold each input for (ms)</span>
+            <input type="number" id="setTapHold" min="5" max="1000" step="5" />
+          </label>
+          <label class="field">
+            <span>Delay after opening menu (ms)</span>
+            <input type="number" id="setOpenDelay" min="0" max="5000" step="10" />
+          </label>
+          <label class="field">
+            <span>Delay before closing menu (ms)</span>
+            <input type="number" id="setCloseDelay" min="0" max="5000" step="10" />
+          </label>
+        </section>
+
+        <section>
+          <h4>Control hotkeys</h4>
+
+          <div class="field">
+            <span>Arm / disarm macros</span>
+            <button class="hotkey-chip" id="setToggleHotkey"></button>
+          </div>
+          <div class="field">
+            <span>Abort running macro</span>
+            <button class="hotkey-chip" id="setAbortHotkey"></button>
+          </div>
+        </section>
+
+        <section>
+          <h4>Behaviour</h4>
+
+          <label class="check">
+            <input type="checkbox" id="setReleaseMods" />
+            <span>Release trigger modifiers before injecting
+              <em>(stops a held Alt or Shift from reaching the game)</em></span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="setMinimizeToTray" />
+            <span>Closing the window minimises to the tray</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="setStartMinimized" />
+            <span>Start minimised to the tray</span>
+          </label>
+
+          <div class="settings-footer">
+            <button class="btn btn-ghost btn-small" id="openConfigBtn">Open config folder</button>
+            <button class="btn btn-danger btn-small" id="resetBtn">Reset everything</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="modal-actions">
+        <span class="config-path" id="configPath"></span>
+        <span class="spacer"></span>
+        <button class="btn btn-primary" id="settingsClose">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
