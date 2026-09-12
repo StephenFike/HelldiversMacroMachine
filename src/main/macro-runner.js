@@ -152,6 +152,19 @@ class MacroRunner {
     release(stratagemVk);
   }
 
+  /**
+   * Synchronously lift every key this runner is able to press.
+   *
+   * Used on shutdown. A normal abort cleans up at the running loop's next
+   * checkpoint, but if the process is exiting there is no next checkpoint — and
+   * the game would be left with the stratagem key held down.
+   */
+  releaseAll(settings) {
+    const dirVks = {};
+    for (const dir of DIRECTIONS) dirVks[dir] = vkFor(settings.directions[dir]);
+    this._releaseAll(vkFor(settings.stratagemKey), dirVks);
+  }
+
   /** Cancel the in-flight macro, if any. Returns true if something was running. */
   abort() {
     if (!this.isRunning) return false;

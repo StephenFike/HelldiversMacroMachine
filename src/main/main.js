@@ -352,7 +352,20 @@ if (!app.requestSingleInstanceLock()) {
     registerHotkeys();
   });
 
-  app.on('will-quit', () => globalShortcut.unregisterAll());
+  app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
+
+    // Quitting mid-macro would otherwise leave the stratagem key held down in
+    // the game, with nothing left running to lift it.
+    if (runner) {
+      runner.abort();
+      try {
+        runner.releaseAll(store.data.settings);
+      } catch (err) {
+        console.error('Failed to release keys on quit:', err.message);
+      }
+    }
+  });
 
   // Tray app: closing the window is not quitting.
   app.on('window-all-closed', () => {});
