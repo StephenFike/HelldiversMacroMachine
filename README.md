@@ -7,44 +7,85 @@ Down for you, with the 0.04 s spacing the game requires between inputs.
 All 112 stratagems ship with the app, codes taken from the
 [HELLDIVERS 2 wiki](https://helldivers.wiki.gg/wiki/Stratagems).
 
-## Download
+## Install
 
-Grab the latest build from the [Releases page](../../releases). Two options, same app:
+Windows 10 or 11. Nothing else needed - no Node, no runtime, no dependencies.
 
-- **`HelldiversMacroMachine-portable.exe`** - one file, nothing to install. Good
-  if you want to try it or keep it on a USB stick. Takes a couple of seconds to
-  start, because it unpacks itself each time you launch it.
-- **`HelldiversMacroMachine-setup.exe`** - installs to your user folder (no
-  admin prompt), adds Start menu and desktop shortcuts, and starts instantly
-  afterwards. Better if you'll actually be using it.
+### Step 1 - Download it
 
-Either way it puts an icon in the system tray and opens its window.
+Open the [**Releases page**](../../releases) and, under the newest release, click
+**Assets** to expand the file list. Download **one** of these:
 
-### Windows will warn you the first time
+| File | Choose this if |
+| --- | --- |
+| `HelldiversMacroMachine-1.0.0-setup.exe` | **Recommended.** Installs properly, adds a Start menu and desktop shortcut, and opens instantly every time. |
+| `HelldiversMacroMachine-1.0.0-portable.exe` | You just want to try it, or run it off a USB stick. Nothing is installed, but it takes a few seconds to start each time. |
 
-The builds aren't code-signed - a signing certificate costs a few hundred
-dollars a year, which is hard to justify for a free stratagem macro tool. So
-SmartScreen shows **"Windows protected your PC"** the first time you run it.
-Click **More info**, then **Run anyway**. You only do this once.
+They are the same app - only how they get onto your PC differs.
 
-If you'd rather not take that on faith, build it yourself from source - it takes
-two commands and you end up with a byte-for-byte equivalent app.
+### Step 2 - Get past the Windows warning
 
-## Building it yourself
+When you run the file, Windows shows a blue box: **"Windows protected your PC"**.
 
-```
-npm install
-npm run dist
-```
+> Click **More info**, then click the **Run anyway** button that appears.
 
-The build lands in `dist/`, and a copy is placed in the project root as
-`Helldivers Macro Machine.exe` so it's easy to find. `npm run dist:installer`
-builds the setup wizard instead, and `npm run dist:all` builds both.
+This happens because the app isn't code-signed - a signing certificate costs a
+few hundred dollars a year, which is hard to justify for a free macro tool. It is
+not a sign anything is wrong, and you only have to do it once. If you would
+rather not take that on trust, [build it yourself](#building-it-yourself) from
+this source in two commands.
 
-To run from source without building: `npm start`.
+Your antivirus may also flag it. The app simulates keypresses, which is the same
+Windows API a keylogger would use - so heuristic scanners sometimes get twitchy.
+It does not read your keyboard, and it makes no network connections at all.
 
-Tagged pushes build and publish automatically - see
-[.github/workflows/release.yml](.github/workflows/release.yml).
+### Step 3 - Install (installer only)
+
+Click through the wizard. It installs into your own user folder, so **Windows
+will not ask for an administrator password**. When it finishes, the app opens by
+itself.
+
+If you downloaded the portable version instead, skip this - double-clicking the
+file *is* running it. Put it somewhere sensible first, like your Desktop.
+
+### Step 4 - Match the keys to your game
+
+This is the one step people miss, and the app does nothing without it.
+
+Open **Settings** in the app and check the **In-game keys** section against your
+HELLDIVERS 2 controls:
+
+- **Stratagem key** - default `Left Ctrl`. This is the key you hold in game to
+  open the stratagem menu.
+- **Up / Down / Left / Right** - default `W` `S` `A` `D`.
+
+If you never changed your controls in HELLDIVERS 2, the defaults already match
+and there is nothing to do. If you rebound anything - arrow keys are a common
+choice - set it here to match, or the macros will press the wrong keys.
+
+### Step 5 - Use it in game
+
+1. Leave the app running. Closing the window only hides it to the **system
+   tray** (bottom-right of your taskbar, possibly under the `^` arrow). Click the
+   tray icon to bring it back.
+2. Check the top-right of the app reads **ARMED** in green. If it says DISABLED,
+   click **Arm macros**.
+3. Launch HELLDIVERS 2 and press <kbd>Ctrl</kbd>+<kbd>3</kbd> in a mission - the
+   Eagle 500kg Bomb gets called in.
+
+Set your own hotkeys to whatever loadout you're running before you drop - click
+any hotkey chip to change the key, or a stratagem name to change what it calls.
+
+### Uninstalling
+
+Installer version: **Settings → Apps → Installed apps → Helldivers Macro
+Machine → Uninstall**, the same as any other program.
+
+Portable version: delete the `.exe`.
+
+Either way, your hotkeys and settings are kept in
+`%APPDATA%\Helldivers Macro Machine`. Delete that folder too if you want it
+gone completely.
 
 ## Using it
 
@@ -122,6 +163,24 @@ Pick a different one.
 **The game reads a different direction than expected.** Check the direction keys
 in Settings match your in-game bindings. Note that arrow keys and the numpad are
 different keys even though both have arrows on them.
+
+## Building it yourself
+
+Needs [Node.js](https://nodejs.org) 20 or newer.
+
+```
+npm install
+npm run dist
+```
+
+The build lands in `dist/`, and a copy is placed in the project root as
+`Helldivers Macro Machine.exe` so it's easy to find. `npm run dist:installer`
+builds the setup wizard instead, and `npm run dist:all` builds both.
+
+To run from source without building: `npm start`.
+
+Pushing a version tag builds and publishes both binaries automatically - see
+[.github/workflows/release.yml](.github/workflows/release.yml).
 
 ## How input is sent
 
