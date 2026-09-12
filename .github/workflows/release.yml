@@ -30,19 +30,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build portable and installer
-        run: npm run dist:all
+      - name: Build the installer
+        run: npm run dist
 
       - name: Show what was built
         run: Get-ChildItem dist -Filter *.exe | Select-Object Name, Length
         shell: pwsh
 
       # Only publish for real tag pushes; a manual run just proves it builds.
-      - name: Attach binaries to the release
+      - name: Attach the installer to the release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            dist/HelldiversMacroMachine-*-portable.exe
-            dist/HelldiversMacroMachine-*-setup.exe
+          files: dist/HelldiversMacroMachine-*-setup.exe
           generate_release_notes: true

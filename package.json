@@ -11,9 +11,7 @@
     "icon": "node scripts/make-icon.js",
     "start": "electron .",
     "place": "node scripts/place-exe.js",
-    "dist": "npm run icon && electron-builder --win portable && npm run place",
-    "dist:installer": "npm run icon && electron-builder --win nsis && npm run place",
-    "dist:all": "npm run icon && electron-builder --win portable nsis && npm run place"
+    "dist": "npm run icon && electron-builder --win nsis && npm run place"
   },
   "dependencies": {
     "koffi": "^3.2.1"
@@ -40,12 +38,8 @@
     "win": {
       "icon": "build/icon.ico",
       "target": [
-        "portable",
         "nsis"
       ]
-    },
-    "portable": {
-      "artifactName": "HelldiversMacroMachine-${version}-portable.exe"
     },
     "nsis": {
       "artifactName": "HelldiversMacroMachine-${version}-setup.exe",

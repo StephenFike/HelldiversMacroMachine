@@ -1,12 +1,12 @@
 'use strict';
 
 /**
- * Copies the built executables out of dist/ and into the project root under
- * friendly, unversioned names, so anyone who downloads the folder sees
- * something obviously double-clickable without digging through build output.
+ * Copies the built installer out of dist/ and into the project root under a
+ * friendly, unversioned name, so it is easy to find without digging through
+ * build output.
  *
- * The names are deliberately stable across versions: rebuilding overwrites the
- * copy in place instead of leaving a trail of stale executables behind.
+ * The name is deliberately stable across versions: rebuilding overwrites the
+ * copy in place instead of leaving a trail of stale installers behind.
  */
 
 const fs = require('fs');
@@ -16,7 +16,6 @@ const root = path.join(__dirname, '..');
 const distDir = path.join(root, 'dist');
 
 const TARGETS = [
-  { match: /-portable\.exe$/i, name: 'Helldivers Macro Machine.exe' },
   { match: /-setup\.exe$/i, name: 'Helldivers Macro Machine Setup.exe' }
 ];
 
@@ -43,6 +42,6 @@ for (const { match, name } of TARGETS) {
 }
 
 if (!placed) {
-  console.error(`No portable or setup .exe found in dist/ (saw: ${built.join(', ') || 'nothing'})`);
+  console.error(`No setup .exe found in dist/ (saw: ${built.join(', ') || 'nothing'})`);
   process.exit(1);
 }

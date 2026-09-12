@@ -14,14 +14,12 @@ Windows 10 or 11. Nothing else needed - no Node, no runtime, no dependencies.
 ### Step 1 - Download it
 
 Open the [**Releases page**](../../releases) and, under the newest release, click
-**Assets** to expand the file list. Download **one** of these:
+**Assets** to expand the file list. Download:
 
-| File | Choose this if |
-| --- | --- |
-| `HelldiversMacroMachine-1.0.0-setup.exe` | **Recommended.** Installs properly, adds a Start menu and desktop shortcut, and opens instantly every time. |
-| `HelldiversMacroMachine-1.0.0-portable.exe` | You just want to try it, or run it off a USB stick. Nothing is installed, but it takes a few seconds to start each time. |
+> **`HelldiversMacroMachine-1.0.0-setup.exe`**
 
-They are the same app - only how they get onto your PC differs.
+(The version number will be higher if there have been newer releases - always
+take the newest one.)
 
 ### Step 2 - Get past the Windows warning
 
@@ -39,14 +37,14 @@ Your antivirus may also flag it. The app simulates keypresses, which is the same
 Windows API a keylogger would use - so heuristic scanners sometimes get twitchy.
 It does not read your keyboard, and it makes no network connections at all.
 
-### Step 3 - Install (installer only)
+### Step 3 - Install it
 
 Click through the wizard. It installs into your own user folder, so **Windows
 will not ask for an administrator password**. When it finishes, the app opens by
 itself.
 
-If you downloaded the portable version instead, skip this - double-clicking the
-file *is* running it. Put it somewhere sensible first, like your Desktop.
+You now have a desktop shortcut and a Start menu entry. Launching takes about
+half a second.
 
 ### Step 4 - Match the keys to your game
 
@@ -78,14 +76,11 @@ any hotkey chip to change the key, or a stratagem name to change what it calls.
 
 ### Uninstalling
 
-Installer version: **Settings → Apps → Installed apps → Helldivers Macro
-Machine → Uninstall**, the same as any other program.
+**Settings → Apps → Installed apps → Helldivers Macro Machine → Uninstall**,
+the same as any other program.
 
-Portable version: delete the `.exe`.
-
-Either way, your hotkeys and settings are kept in
-`%APPDATA%\Helldivers Macro Machine`. Delete that folder too if you want it
-gone completely.
+Your hotkeys and settings are kept in `%APPDATA%\Helldivers Macro Machine`.
+Delete that folder too if you want it gone completely.
 
 ## Using it
 
@@ -173,14 +168,18 @@ npm install
 npm run dist
 ```
 
-The build lands in `dist/`, and a copy is placed in the project root as
-`Helldivers Macro Machine.exe` so it's easy to find. `npm run dist:installer`
-builds the setup wizard instead, and `npm run dist:all` builds both.
+That produces the installer in `dist/`, and copies it to the project root as
+`Helldivers Macro Machine Setup.exe` so it's easy to find.
 
 To run from source without building: `npm start`.
 
-Pushing a version tag builds and publishes both binaries automatically - see
+Pushing a version tag builds and publishes the installer automatically - see
 [.github/workflows/release.yml](.github/workflows/release.yml).
+
+Only an installed build is shipped, deliberately. A portable single-file build
+unpacks its whole ~250 MB payload into `%TEMP%` on every launch, which measured
+**~9.8 seconds to open, against ~0.4 seconds installed** - a 22x difference for
+an app you open every time you play.
 
 ## How input is sent
 
