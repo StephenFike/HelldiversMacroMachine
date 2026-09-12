@@ -45,27 +45,38 @@ jobs:
           files: dist/HelldiversMacroMachine-*-setup.exe
           generate_release_notes: true
           body: |
-            Stratagem hotkeys for HELLDIVERS 2. Press a key, it types the
-            stratagem code for you. All 112 stratagems included.
+            ## Attention, Helldiver.
 
-            ## Install
+            Super Earth High Command has cleared **Helldivers Macro Machine** for
+            deployment. Every stratagem in the arsenal — all 112 of them — bound to
+            a single keypress and entered at the exact cadence the stratagem beacon
+            demands.
 
-            1. Download **`HelldiversMacroMachine-*-setup.exe`** from **Assets** below.
-            2. Run it. Windows will say **"Windows protected your PC"** - click
-               **More info**, then **Run anyway**. The app isn't code-signed, which
-               is why that appears; it only happens once.
-            3. Click through the wizard. It installs to your user folder, so there
-               is **no administrator prompt**.
-            4. Open **Settings** in the app and check the **In-game keys** match your
-               HELLDIVERS 2 controls. Defaults are `Left Ctrl` + `WASD`, which is
-               what a stock install uses. **If you rebound your stratagem controls
-               in game and don't change them here, the macros will press the wrong
-               keys.**
+            Your hands are now free. Use them to spread Democracy.
 
-            Then leave it running - it lives in the system tray - and press
-            <kbd>Ctrl</kbd>+<kbd>3</kbd> in a mission to call in an Eagle 500kg Bomb.
+            ## Enlistment
 
-            Full documentation, troubleshooting and all the default hotkeys are in
-            the [README](https://github.com/${{ github.repository }}#readme).
+            1. **Requisition** `HelldiversMacroMachine-*-setup.exe` from **Assets** below.
+            2. **Run it.** Windows will say **"Windows protected your PC"** — click
+               **More info**, then **Run anyway**. The app isn't code-signed, so
+               Windows doesn't recognise it. It only happens once.
+            3. **Click through the installer.** It installs to your user folder, so
+               there is **no administrator prompt**.
+            4. **Calibrate.** Open **Settings** and check the **In-game keys** match
+               your HELLDIVERS 2 controls. Defaults are `Left Ctrl` + `WASD`, which is
+               what a stock install uses. **If you rebound your stratagem controls in
+               game and don't change them here, nothing gets called in.**
+
+            Then leave it running in the system tray, drop into a mission, and press
+            <kbd>Ctrl</kbd>+<kbd>3</kbd>. Somewhere below, a bug nest is about to meet
+            500 kilograms of Freedom.
+
+            *Democracy has landed.*
+
+            The full field manual, troubleshooting and default hotkeys are in the
+            [README](https://github.com/${{ github.repository }}#readme).
+
+            > Unofficial fan-made tool. Not affiliated with or endorsed by Arrowhead
+            > Game Studios or Sony Interactive Entertainment.
 
             ---
