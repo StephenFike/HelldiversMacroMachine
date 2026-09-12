@@ -114,7 +114,15 @@ kbd {
   border-radius: var(--radius);
   background: var(--yellow);
   color: #0d0d0d;
-  font-size: 17px;
+}
+
+/* Reproduces the generated app icon (src/main/icon.js) exactly, so the header
+   mark and the taskbar/tray icon are the same shape: triangle head from y=20
+   to y=52, stem from y=52 to y=82, in a 100-unit box. */
+.brand-mark svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .brand h1 { font-size: 15px; letter-spacing: 0.02em; }
